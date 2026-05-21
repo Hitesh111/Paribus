@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: paribus-hospital-bulk-processing
+    env: docker
+    plan: free
+    envVars:
+      - key: HOSPITAL_DIRECTORY_API_BASE_URL
+        value: https://hospital-directory.onrender.com
+      - key: HOSPITAL_DIRECTORY_TIMEOUT_SECONDS
+        value: "15"
+      - key: MAX_BULK_HOSPITALS
+        value: "20"
+      - key: MAX_BULK_UPLOAD_BYTES
+        value: "1048576"
+      - key: HOSPITAL_DIRECTORY_MAX_CONCURRENCY
+        value: "5"
+      - key: HOSPITAL_DIRECTORY_MAX_RETRIES
+        value: "3"
+      - key: HOSPITAL_DIRECTORY_INITIAL_RETRY_DELAY
+        value: "1.0"
+
+

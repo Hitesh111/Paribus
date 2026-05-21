@@ -1,0 +1,19 @@
+{
+  "id": "a90f1d53-bc2a-4ee1-b99b-0081d6f461a9",
+  "name": "Paribus Live Environment (Render)",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://paribus-hospital-bulk-processing.onrender.com",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "batch_id",
+      "value": "300319b4-9c8e-4822-9db0-a85d63f2cf05",
+      "type": "default",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

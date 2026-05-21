@@ -1,0 +1,671 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Paribus Hospital Bulk Processing API",
+        "description": "Bulk CSV ingestion service that creates hospitals through the upstream Hospital Directory API.",
+        "version": "0.1.0"
+    },
+    "tags": [
+        {
+            "name": "Bulk Processing",
+            "description": "Endpoints for bulk hospital directory upload, validation, status monitoring, and batch resumption."
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "Bulk Processing"
+                ],
+                "summary": "Root",
+                "operationId": "root__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    },
+                                    "title": "Response Root  Get"
+                                },
+                                "example": {
+                                    "message": "Paribus Hospital Bulk Processing API"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "tags": [
+                    "Bulk Processing"
+                ],
+                "summary": "Health",
+                "operationId": "health_health_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    },
+                                    "title": "Response Health Health Get"
+                                },
+                                "example": {
+                                    "status": "ok"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/hospitals/bulk": {
+            "post": {
+                "tags": [
+                    "Bulk Processing"
+                ],
+                "summary": "Bulk Create Hospitals",
+                "operationId": "bulk_create_hospitals_hospitals_bulk_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_bulk_create_hospitals_hospitals_bulk_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BulkProcessingResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/hospitals/bulk/{batch_id}": {
+            "get": {
+                "tags": [
+                    "Bulk Processing"
+                ],
+                "summary": "Get Bulk Status",
+                "operationId": "get_bulk_status_hospitals_bulk__batch_id__get",
+                "parameters": [
+                    {
+                        "name": "batch_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Batch Id",
+                            "example": "550e8400-e29b-41d4-a716-446655440000"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BulkBatchStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/hospitals/bulk/{batch_id}/resume": {
+            "post": {
+                "tags": [
+                    "Bulk Processing"
+                ],
+                "summary": "Resume Bulk",
+                "operationId": "resume_bulk_hospitals_bulk__batch_id__resume_post",
+                "parameters": [
+                    {
+                        "name": "batch_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Batch Id",
+                            "example": "550e8400-e29b-41d4-a716-446655440000"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BulkProcessingResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/hospitals/bulk/validate": {
+            "post": {
+                "tags": [
+                    "Bulk Processing"
+                ],
+                "summary": "Validate Bulk Csv",
+                "operationId": "validate_bulk_csv_hospitals_bulk_validate_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_validate_bulk_csv_hospitals_bulk_validate_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CsvValidationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Body_bulk_create_hospitals_hospitals_bulk_post": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "format": "binary",
+                        "title": "File",
+                        "description": "CSV file containing hospital data to bulk process. Must include headers: name, address. Optional header: phone. Maximum 20 rows.",
+                        "example": "name,address,phone\nGeneral Hospital,123 Main St,555-1111\nCity Care,456 Side St,"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file"
+                ],
+                "title": "Body_bulk_create_hospitals_hospitals_bulk_post"
+            },
+            "Body_validate_bulk_csv_hospitals_bulk_validate_post": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "format": "binary",
+                        "title": "File",
+                        "description": "CSV file containing hospital data to validate. Must include headers: name, address. Optional header: phone. Maximum 20 rows.",
+                        "example": "name,address,phone\nGeneral Hospital,123 Main St,555-1111\nCity Care,456 Side St,"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file"
+                ],
+                "title": "Body_validate_bulk_csv_hospitals_bulk_validate_post"
+            },
+            "BulkBatchStatusResponse": {
+                "properties": {
+                    "batch_id": {
+                        "type": "string",
+                        "title": "Batch Id"
+                    },
+                    "total_hospitals": {
+                        "type": "integer",
+                        "title": "Total Hospitals"
+                    },
+                    "processed_hospitals": {
+                        "type": "integer",
+                        "title": "Processed Hospitals"
+                    },
+                    "failed_hospitals": {
+                        "type": "integer",
+                        "title": "Failed Hospitals"
+                    },
+                    "processing_time_seconds": {
+                        "type": "number",
+                        "minimum": 0.0,
+                        "title": "Processing Time Seconds"
+                    },
+                    "batch_activated": {
+                        "type": "boolean",
+                        "title": "Batch Activated"
+                    },
+                    "hospitals": {
+                        "items": {
+                            "$ref": "#/components/schemas/HospitalRowResponse"
+                        },
+                        "type": "array",
+                        "title": "Hospitals"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "started_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Started At"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Updated At"
+                    },
+                    "completed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true,
+                        "title": "Completed At"
+                    },
+                    "activation_error": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "Activation Error"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "batch_id",
+                    "total_hospitals",
+                    "processed_hospitals",
+                    "failed_hospitals",
+                    "processing_time_seconds",
+                    "batch_activated",
+                    "hospitals",
+                    "status",
+                    "started_at",
+                    "updated_at"
+                ],
+                "title": "BulkBatchStatusResponse",
+                "example": {
+                    "batch_id": "550e8400-e29b-41d4-a716-446655440000",
+                    "total_hospitals": 3,
+                    "processed_hospitals": 3,
+                    "failed_hospitals": 0,
+                    "processing_time_seconds": 1.25,
+                    "batch_activated": true,
+                    "hospitals": [
+                        {
+                            "row": 1,
+                            "hospital_id": 101,
+                            "name": "General Hospital",
+                            "status": "created_and_activated",
+                            "error": null
+                        },
+                        {
+                            "row": 2,
+                            "hospital_id": 102,
+                            "name": "City Care",
+                            "status": "created_and_activated",
+                            "error": null
+                        },
+                        {
+                            "row": 3,
+                            "hospital_id": 103,
+                            "name": "Metro Health",
+                            "status": "created_and_activated",
+                            "error": null
+                        }
+                    ],
+                    "status": "completed",
+                    "started_at": "2026-05-21T13:41:00Z",
+                    "updated_at": "2026-05-21T13:41:01Z",
+                    "completed_at": "2026-05-21T13:41:01Z",
+                    "activation_error": null
+                }
+            },
+            "BulkProcessingResponse": {
+                "properties": {
+                    "batch_id": {
+                        "type": "string",
+                        "title": "Batch Id"
+                    },
+                    "total_hospitals": {
+                        "type": "integer",
+                        "title": "Total Hospitals"
+                    },
+                    "processed_hospitals": {
+                        "type": "integer",
+                        "title": "Processed Hospitals"
+                    },
+                    "failed_hospitals": {
+                        "type": "integer",
+                        "title": "Failed Hospitals"
+                    },
+                    "processing_time_seconds": {
+                        "type": "number",
+                        "minimum": 0.0,
+                        "title": "Processing Time Seconds"
+                    },
+                    "batch_activated": {
+                        "type": "boolean",
+                        "title": "Batch Activated"
+                    },
+                    "hospitals": {
+                        "items": {
+                            "$ref": "#/components/schemas/HospitalRowResponse"
+                        },
+                        "type": "array",
+                        "title": "Hospitals"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "batch_id",
+                    "total_hospitals",
+                    "processed_hospitals",
+                    "failed_hospitals",
+                    "processing_time_seconds",
+                    "batch_activated",
+                    "hospitals"
+                ],
+                "title": "BulkProcessingResponse",
+                "example": {
+                    "batch_id": "550e8400-e29b-41d4-a716-446655440000",
+                    "total_hospitals": 3,
+                    "processed_hospitals": 3,
+                    "failed_hospitals": 0,
+                    "processing_time_seconds": 1.25,
+                    "batch_activated": true,
+                    "hospitals": [
+                        {
+                            "row": 1,
+                            "hospital_id": 101,
+                            "name": "General Hospital",
+                            "status": "created_and_activated",
+                            "error": null
+                        },
+                        {
+                            "row": 2,
+                            "hospital_id": 102,
+                            "name": "City Care",
+                            "status": "created_and_activated",
+                            "error": null
+                        },
+                        {
+                            "row": 3,
+                            "hospital_id": 103,
+                            "name": "Metro Health",
+                            "status": "created_and_activated",
+                            "error": null
+                        }
+                    ]
+                }
+            },
+            "CsvPreviewRow": {
+                "properties": {
+                    "row": {
+                        "type": "integer",
+                        "title": "Row"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "address": {
+                        "type": "string",
+                        "title": "Address"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "Phone"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "row",
+                    "name",
+                    "address"
+                ],
+                "title": "CsvPreviewRow",
+                "example": {
+                    "row": 1,
+                    "name": "General Hospital",
+                    "address": "123 Main St",
+                    "phone": "555-1111"
+                }
+            },
+            "CsvValidationResponse": {
+                "properties": {
+                    "valid": {
+                        "type": "boolean",
+                        "title": "Valid"
+                    },
+                    "total_hospitals": {
+                        "type": "integer",
+                        "title": "Total Hospitals"
+                    },
+                    "preview": {
+                        "items": {
+                            "$ref": "#/components/schemas/CsvPreviewRow"
+                        },
+                        "type": "array",
+                        "title": "Preview"
+                    },
+                    "errors": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Errors"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "valid",
+                    "total_hospitals",
+                    "preview",
+                    "errors"
+                ],
+                "title": "CsvValidationResponse",
+                "example": {
+                    "valid": true,
+                    "total_hospitals": 2,
+                    "preview": [
+                        {
+                            "row": 1,
+                            "name": "General Hospital",
+                            "address": "123 Main St",
+                            "phone": "555-1111"
+                        },
+                        {
+                            "row": 2,
+                            "name": "City Care",
+                            "address": "456 Side St",
+                            "phone": null
+                        }
+                    ],
+                    "errors": []
+                }
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "type": "string",
+                        "title": "Detail",
+                        "example": "Validation failed: Required field 'file' in body is missing."
+                    },
+                    "error_type": {
+                        "type": "string",
+                        "title": "Error Type",
+                        "example": "ValidationError"
+                    },
+                    "message": {
+                        "type": "string",
+                        "title": "Message",
+                        "example": "The request payload failed validation."
+                    },
+                    "errors": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Errors"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError",
+                "example": {
+                    "detail": "Validation failed: Required field 'file' in body is missing.",
+                    "error_type": "ValidationError",
+                    "message": "The request payload failed validation.",
+                    "errors": [
+                        {
+                            "location": "body.file",
+                            "message": "Field required",
+                            "type": "missing",
+                            "input": null
+                        }
+                    ]
+                }
+            },
+            "HospitalRowResponse": {
+                "properties": {
+                    "row": {
+                        "type": "integer",
+                        "title": "Row"
+                    },
+                    "hospital_id": {
+                        "type": "integer",
+                        "nullable": true,
+                        "title": "Hospital Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "error": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "Error"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "row",
+                    "name",
+                    "status"
+                ],
+                "title": "HospitalRowResponse",
+                "example": {
+                    "row": 1,
+                    "hospital_id": 101,
+                    "name": "General Hospital",
+                    "status": "created_and_activated",
+                    "error": null
+                }
+            },
+            "ValidationError": {
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "title": "Location",
+                        "example": "body.file"
+                    },
+                    "message": {
+                        "type": "string",
+                        "title": "Message",
+                        "example": "Field required"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type",
+                        "example": "missing"
+                    },
+                    "input": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "Input",
+                        "example": null
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "location",
+                    "message",
+                    "type"
+                ],
+                "title": "ValidationError",
+                "example": {
+                    "location": "body.file",
+                    "message": "Field required",
+                    "type": "missing",
+                    "input": null
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8080"
+    environment:
+      HOSPITAL_DIRECTORY_API_BASE_URL: https://hospital-directory.onrender.com
+      HOSPITAL_DIRECTORY_TIMEOUT_SECONDS: "15"
+      MAX_BULK_HOSPITALS: "20"
+      MAX_BULK_UPLOAD_BYTES: "1048576"
+
